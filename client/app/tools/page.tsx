@@ -119,7 +119,7 @@ export default function ToolPage() {
                                     onClick={() => handleSelect(contest.type)}
                                     className={`mt-auto w-full bg-gradient-to-r ${contest.gradient} text-white font-bold py-4 px-6 rounded-xl shadow-lg transform transition-all duration-300 hover:shadow-xl hover:scale-105 active:scale-95`}
                                 >
-                                    Select Contest
+                                    Opens Soon
                                 </button>
                             </div>
 

@@ -1,6 +1,35 @@
 'use client';
 
+import { useState } from 'react';
+
 export default function InvestmentPage() {
+    const [showDialog, setShowDialog] = useState(false);
+    const [selectedUpiId, setSelectedUpiId] = useState('');
+    const [selectedAmount, setSelectedAmount] = useState('');
+
+    const upiIds = [
+        'merchant1@upi',
+        'merchant2@upi',
+        'merchant3@upi',
+        'merchant4@upi',
+        'merchant5@upi',
+        'merchant6@upi',
+        'merchant7@upi',
+        'merchant8@upi',
+        'merchant9@upi',
+        'merchant10@upi',
+    ];
+
+    const getRandomUpiId = () => {
+        const randomIndex = Math.floor(Math.random() * upiIds.length);
+        return upiIds[randomIndex];
+    };
+
+    const generateUpiQrUrl = (upiId: string, amount: string) => {
+        const amountNum = amount.replace(/,/g, '');
+        const upiLink = `upi://pay?pa=${upiId}&am=${amountNum}&cu=INR`;
+        return `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
+    };
     const investments = [
         {
             multiplier: '2X',
@@ -34,9 +63,15 @@ export default function InvestmentPage() {
         },
     ];
 
-    const handleAction = (action: string, multiplier: string) => {
-        // Handle investment action logic here
-        console.log(`${action} clicked for ${multiplier} investment`);
+    const handleAction = (action: string, multiplier: string, amount: string) => {
+        if (action === 'pay') {
+            const randomUpi = getRandomUpiId();
+            setSelectedUpiId(randomUpi);
+            setSelectedAmount(amount);
+            setShowDialog(true);
+        } else {
+            console.log(`${action} clicked for ${multiplier} investment`);
+        }
     };
 
     return (
@@ -99,7 +134,7 @@ export default function InvestmentPage() {
 
                                 {/* Action Button */}
                                 <button
-                                    onClick={() => handleAction(investment.buttonAction, investment.multiplier)}
+                                    onClick={() => handleAction(investment.buttonAction, investment.multiplier, investment.amount)}
                                     className={`mt-auto w-full bg-gradient-to-r ${investment.gradient} hover:opacity-90 text-white font-bold py-4 px-6 rounded-xl uppercase transition-all duration-300 hover:shadow-xl hover:scale-105 active:scale-95`}
                                 >
                                     {investment.buttonText}
@@ -174,6 +209,61 @@ export default function InvestmentPage() {
                     </div>
                 </div>
             </div>
+
+            {/* UPI Payment Dialog */}
+            {showDialog && (
+                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden">
+                        {/* Dialog Header */}
+                        <div className="bg-gradient-to-r from-blue-500 to-cyan-500 px-6 py-4">
+                            <h3 className="text-xl font-bold text-white text-center">
+                                Pay with UPI
+                            </h3>
+                        </div>
+
+                        {/* Dialog Content */}
+                        <div className="p-6 text-center">
+                            {/* QR Code */}
+                            <div className="mb-6">
+                                <div className="inline-block p-3 bg-white rounded-xl shadow-lg border border-gray-200">
+                                    <img
+                                        src={generateUpiQrUrl(selectedUpiId, selectedAmount)}
+                                        alt="UPI QR Code"
+                                        className="w-48 h-48"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Amount */}
+                            <div className="mb-4">
+                                <p className="text-sm text-gray-500 mb-1">Amount to Pay</p>
+                                <p className="text-3xl font-bold text-gray-800">₹{selectedAmount}</p>
+                            </div>
+
+                            {/* UPI ID */}
+                            <div className="mb-6">
+                                <p className="text-sm text-gray-500 mb-1">UPI ID</p>
+                                <div className="bg-gray-100 rounded-lg px-4 py-2 inline-block">
+                                    <p className="text-lg font-semibold text-gray-800">{selectedUpiId}</p>
+                                </div>
+                            </div>
+
+                            {/* Instructions */}
+                            <p className="text-sm text-gray-500 mb-6">
+                                Scan the QR code with any UPI app to complete payment
+                            </p>
+
+                            {/* Close Button */}
+                            <button
+                                onClick={() => setShowDialog(false)}
+                                className="w-full bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-6 rounded-xl transition-colors"
+                            >
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
