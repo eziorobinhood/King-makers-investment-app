@@ -9,11 +9,6 @@ export default function Header() {
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
-  // Don't show header on login page
-  if (pathname === '/login') {
-    return null;
-  }
-
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
@@ -36,6 +31,11 @@ export default function Header() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, [lastScrollY]);
+
+  // Don't show header on login and signup pages
+  if (pathname === '/login' || pathname === '/signup') {
+    return null;
+  }
 
   return (
     <header 
