@@ -8,16 +8,15 @@ export default function InvestmentPage() {
     const [selectedAmount, setSelectedAmount] = useState('');
 
     const upiIds = [
-        'merchant1@upi',
-        'merchant2@upi',
-        'merchant3@upi',
-        'merchant4@upi',
-        'merchant5@upi',
-        'merchant6@upi',
-        'merchant7@upi',
-        'merchant8@upi',
-        'merchant9@upi',
-        'merchant10@upi',
+        'kingmakers0-0@axl',
+        'kingmakers0-0@ibl',
+        'kingmakers0-0@ybl',
+        'kingmakers1-0@axl',
+        'kingmakers1-0@ibl',
+        'kingmakers1-0@ybl',
+        'kingmakers1-2@axl',
+        'kingmakers1-2@ibl',
+        'kingmakers1-2@ybl',
     ];
 
     const getRandomUpiId = () => {
@@ -159,7 +158,7 @@ export default function InvestmentPage() {
                                 Comments
                             </h2>
                         </div>
-                        
+
                         {/* Comments Content */}
                         <div className="p-8">
                             <div className="space-y-4">
@@ -191,7 +190,7 @@ export default function InvestmentPage() {
                                     </div>
                                 </div>
                             </div>
-                            
+
                             {/* Add Comment Input */}
                             <div className="mt-6 pt-6 border-t border-gray-200">
                                 <div className="flex gap-3">

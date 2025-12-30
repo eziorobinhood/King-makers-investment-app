@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import Logo from '@/components/svg';
-import { getUser, clearUser, User } from '@/utils/auth';
+import { getUser, User } from '@/utils/auth';
+import toast, { Toaster } from 'react-hot-toast';
 
 export default function DashboardPage() {
   const [user, setUser] = useState<User | null>(null);
@@ -22,15 +22,13 @@ export default function DashboardPage() {
     setLoading(false);
   }, [router]);
 
-  const handleLogout = () => {
-    clearUser();
-    router.push('/login');
-  };
-
   const copyReferralCode = () => {
     if (user?.referral_code_generated) {
       navigator.clipboard.writeText(user.referral_code_generated);
-      alert('Referral code copied to clipboard!');
+      toast.success('Referral code copied to clipboard!', {
+        duration: 3000,
+        position: 'top-right',
+      });
     }
   };
 
@@ -48,21 +46,9 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm">
-        <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
-          <Logo />
-          <button
-            onClick={handleLogout}
-            className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
-          >
-            Logout
-          </button>
-        </div>
-      </div>
-
+      <Toaster />
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-6 py-8">
+      <div className="max-w-4xl mx-auto px-6 pt-24 pb-8">
         {/* Welcome Section */}
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
           <h1 className="text-2xl font-bold text-gray-800 mb-2">

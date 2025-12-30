@@ -1,6 +1,22 @@
 'use client';
 
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { getUser, User } from '@/utils/auth';
+
 export default function ProfilePage() {
+    const [user, setUser] = useState<User | null>(null);
+    const router = useRouter();
+
+    useEffect(() => {
+        const userData = getUser();
+        if (!userData) {
+            router.push('/login');
+            return;
+        }
+        setUser(userData);
+    }, [router]);
+
     const profileData = [
         {
             label: 'Fund Balance',
@@ -16,7 +32,7 @@ export default function ProfilePage() {
         },
         {
             label: 'Invested Amount',
-            value: '₹0.00',
+            value: `₹${user?.investedamount.toLocaleString('en-IN') || '0.00'}`,
             icon: '💵',
             color: 'from-green-500 to-emerald-500',
         },
