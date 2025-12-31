@@ -49,7 +49,7 @@ export default function SignupPage() {
   const handlePhoneVerification = async (userJsonUrl: string) => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://localhost:4000/api/verify-otp', {
+      const response = await fetch('https://king-makers-mongo-api.vercel.app/api/verify-otp', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ user_json_url: userJsonUrl }),
@@ -146,7 +146,7 @@ export default function SignupPage() {
     setIsLoading(true);
     try {
       // Submit signup form to backend
-      const response = await fetch('http://localhost:4000/user/signup', {
+      const response = await fetch('https://king-makers-mongo-api.vercel.app/user/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -243,11 +243,10 @@ export default function SignupPage() {
               type="button"
               onClick={handleVerifyPhone}
               disabled={isLoading || formData.phone.length !== 10 || isPhoneVerified}
-              className={`absolute right-2 top-[34px] px-3 py-1.5 text-sm rounded-md font-medium transition-colors focus:outline-none focus:ring-2 disabled:cursor-not-allowed ${
-                isPhoneVerified
+              className={`absolute right-2 top-[34px] px-3 py-1.5 text-sm rounded-md font-medium transition-colors focus:outline-none focus:ring-2 disabled:cursor-not-allowed ${isPhoneVerified
                   ? 'bg-green-600 text-white cursor-default'
                   : 'bg-gray-800 text-white hover:bg-gray-700 focus:ring-gray-500 disabled:opacity-50'
-              }`}
+                }`}
             >
               {isLoading ? 'Sending...' : isPhoneVerified ? 'Verified ✓' : 'Verify'}
             </button>
