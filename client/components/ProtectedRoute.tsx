@@ -13,9 +13,14 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
   const publicRoutes = ['/login', '/signup', '/'];
 
   useEffect(() => {
-    const checkAuth = () => {
+    const checkAuth = async () => {
+      // Normalize pathname by removing trailing slash for comparison
+      const normalizedPath = pathname.endsWith('/') && pathname !== '/'
+        ? pathname.slice(0, -1)
+        : pathname;
+
       // If we're on a public route, allow access
-      if (publicRoutes.includes(pathname)) {
+      if (publicRoutes.includes(normalizedPath)) {
         setIsChecking(false);
         return;
       }
@@ -23,6 +28,7 @@ export default function ProtectedRoute({ children }: { children: React.ReactNode
       // For protected routes, check if user is authenticated
       if (!isAuthenticated()) {
         router.push('/login');
+        // Don't set isChecking to false here since we're redirecting
         return;
       }
 
